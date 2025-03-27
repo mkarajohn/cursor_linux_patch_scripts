@@ -2,7 +2,7 @@
 
 A maintenance script for enhancing Cursor editor on Linux systems. Removes window frame for better Wayland compatibility and provides easy update management.
 
-![Cursor Logo](https://raw.githubusercontent.com/mxsteini/cursor_patch/main/.github/logo.png)
+<img src="./cursor.png" alt="Cursor Logo" width="100px">
 
 ## Features ✨
 - Automated patching of Cursor AppImage
