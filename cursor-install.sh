@@ -25,19 +25,10 @@ fi
 
 mkdir -p $TEMPDIR $BINDIR $HOME/.icons $HOME/.local/share/applications
 
-pushd $TEMPDIR
-
-
-APPIMAGE_URL=$(curl --silent 'https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=stable' | jq '.downloadUrl' | tr -d '"')
-
-curl --silent $APPIMAGE_URL --output $TEMPDIR/cursor.AppImage.original 
-chmod +x $TEMPDIR/cursor.AppImage.original
-
-# Extract the AppImage
-$TEMPDIR/cursor.AppImage.original --appimage-extract
-cp $TEMPDIR/squashfs-root/usr/share/icons/hicolor/128x128/apps/cursor.png $HOME/.icons/
+curl --silent https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor.png --output $HOME/.icons/cursor.png
 
 curl --silent https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor-update.sh --output $BINDIR/cursor-update.sh
+chmod +x $BINDIR/cursor-update.sh
 
 cat <<EOF > $HOME/.local/share/applications/cursor.desktop
 [Desktop Entry]
@@ -56,8 +47,5 @@ MimeType=x-scheme-handler/cursor;
 [Desktop Action new-empty-window]
 Exec=$BINDIR/cursor --enable-features=UseOzonePlatformc --ozone-platform-hint --new-window %F
 EOF
-
-chmod +x $BINDIR/cursor-update.sh
-popd
 
 $BINDIR/cursor-update.sh
