@@ -2,19 +2,42 @@
 
 BINDIR=$HOME/bin
 TEMPDIR=/tmp/cursor
-APPIMAGE_URL="https://downloader.cursor.sh/linux/appImage/x64"
+
+# Install dependencies
+# Check if jq is installed
+if ! command -v jq &> /dev/null; then
+    echo "Error: jq is not installed. Please install jq and try again."
+    echo "You can install it with: sudo apt-get install jq (Debian/Ubuntu) or sudo yum install jq (CentOS/RHEL)"
+    exit 1
+fi
+
+if ! command -v curl &> /dev/null; then
+    echo "Error: curl is not installed. Please install curl and try again."
+    echo "You can install it with: sudo apt-get install curl (Debian/Ubuntu) or sudo yum install curl (CentOS/RHEL)"
+    exit 1
+fi
+
+if ! command -v tr &> /dev/null; then
+    echo "Error: tr is not installed. Please install tr and try again."
+    echo "You can install it with: sudo apt-get install tr (Debian/Ubuntu) or sudo yum install tr (CentOS/RHEL)"
+    exit 1
+fi
+
 mkdir -p $TEMPDIR $BINDIR $HOME/.icons $HOME/.local/share/applications
 
 pushd $TEMPDIR
 
-wget -O $TEMPDIR/cursor.AppImage.original $APPIMAGE_URL
+
+APPIMAGE_URL=$(curl --silent 'https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=stable' | jq '.downloadUrl' | tr -d '"')
+
+curl --silent $APPIMAGE_URL --output $TEMPDIR/cursor.AppImage.original 
 chmod +x $TEMPDIR/cursor.AppImage.original
 
 # Extract the AppImage
 $TEMPDIR/cursor.AppImage.original --appimage-extract
-cp $TEMPDIR/squashfs-root/cursor.png $HOME/.icons/
+cp $TEMPDIR/squashfs-root/usr/share/icons/hicolor/128x128/apps/cursor.png $HOME/.icons/
 
-wget https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor-update.sh -O $BINDIR/cursor-update.sh
+curl --silent https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor-update.sh --output $BINDIR/cursor-update.sh
 
 cat <<EOF > $HOME/.local/share/applications/cursor.desktop
 [Desktop Entry]
@@ -35,6 +58,6 @@ Exec=$BINDIR/cursor --enable-features=UseOzonePlatformc --ozone-platform-hint --
 EOF
 
 chmod +x $BINDIR/cursor-update.sh
+popd
 
 $BINDIR/cursor-update.sh
-popd
