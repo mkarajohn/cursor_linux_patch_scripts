@@ -1,7 +1,16 @@
 #!/bin/bash -ex
 
-BINDIR=$HOME/bin
-TEMPDIR=/tmp/cursor
+# Default installation directory
+DEFAULT_BINDIR=$HOME/Applications/cursor
+
+# Parse command line arguments
+if [ $# -eq 1 ]; then
+    BINDIR="$1"
+else
+    BINDIR="$DEFAULT_BINDIR"
+fi
+
+TEMPDIR=$BINDIR/tmp
 APPIMAGE_URL=$(curl --silent 'https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=stable' | jq '.downloadUrl' | tr -d '"')
 
 mkdir -p $TEMPDIR
@@ -18,15 +27,12 @@ rm $TEMPDIR/cursor.AppImage.original
 TARGET_FILE="squashfs-root/usr/share/cursor/resources/app/out/main.js"
 sed -i 's/,minHeight/,frame:false,minHeight/g' "$TARGET_FILE"
 
-# Download latest appimagetool
-curl -L -o $TEMPDIR/appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
-chmod +x $TEMPDIR/appimagetool-x86_64.AppImage
-
 # Repackage the AppImage using appimagetool
 rm -f $BINDIR/cursor
-$TEMPDIR/appimagetool-x86_64.AppImage squashfs-root/ $BINDIR/cursor
+$BINDIR/lib/appimagetool-x86_64.AppImage squashfs-root/ $BINDIR/cursor
 chmod +x $BINDIR/cursor
 
 popd
+
 # Cleaning Up
-#rm -rf $TEMPDIR
+rm -rf $TEMPDIR

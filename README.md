@@ -18,7 +18,7 @@ A maintenance script for enhancing Cursor editor on Linux systems. Removes windo
 Run the following command in your terminal:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor-install.sh | bash
+curl -fsSL https://raw.githubusercontent.com/mkarajohn/cursor_linux_patch_scripts/master/cursor-install.sh | bash
 ```
 
 ### Manual Install
@@ -26,7 +26,7 @@ curl -fsSL https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor-i
 1. Download the script:
 
 ```bash
-wget https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor-install.sh
+wget https://raw.githubusercontent.com/mkarajohn/cursor_linux_patch_scripts/master/cursor-install.sh
 ```
 
 2. Run the script:
@@ -38,13 +38,13 @@ bash cursor-install.sh
 3. Update Cursor:
 
 ```bash
-$HOME/bin/cursor-update.sh
+$HOME/Applications/cursor/cursor-update.sh
 ```
 
 4. Uninstall Cursor:
 
 ```bash
-rm -rf $HOME/bin/cursor $HOME/bin/cursor-update.sh $HOME/.icons/cursor.png $HOME/.local/share/applications/cursor.desktop
+rm -rf $HOME/Applications/cursor $HOME/.icons/cursor.png $HOME/.local/share/applications/cursor.desktop
 ```
 
 ## Uninstallation
@@ -52,7 +52,7 @@ rm -rf $HOME/bin/cursor $HOME/bin/cursor-update.sh $HOME/.icons/cursor.png $HOME
 Run the following command in your terminal:
 
 ```bash
-rm -rf $HOME/bin/cursor $HOME/bin/cursor-update.sh $HOME/.icons/cursor.png $HOME/.local/share/applications/cursor.desktop
+rm -rf $HOME/Applications/cursor $HOME/.icons/cursor.png $HOME/.local/share/applications/cursor.desktop
 ```
 
 ## Acknowledgments

@@ -1,7 +1,16 @@
 #!/bin/bash -ex
 
-BINDIR=$HOME/bin
-TEMPDIR=/tmp/cursor
+# Default installation directory
+DEFAULT_BINDIR=$HOME/Applications/cursor
+
+# Parse command line arguments
+if [ $# -eq 1 ]; then
+    BINDIR="$1"
+else
+    BINDIR="$DEFAULT_BINDIR"
+fi
+
+TEMPDIR=$BINDIR/tmp
 
 # Install dependencies
 # Check if jq is installed
@@ -23,29 +32,33 @@ if ! command -v tr &> /dev/null; then
     exit 1
 fi
 
-mkdir -p $TEMPDIR $BINDIR $HOME/.icons $HOME/.local/share/applications
+mkdir -p $BINDIR/icons $BINDIR/lib $HOME/.local/share/applications
 
-curl --silent https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor.png --output $HOME/.icons/cursor.png
+cp ./cursor.png $BINDIR/icons/cursor.png
 
-curl --silent https://raw.githubusercontent.com/mxsteini/cursor_patch/main/cursor-update.sh --output $BINDIR/cursor-update.sh
+cp ./cursor-update.sh $BINDIR/cursor-update.sh
 chmod +x $BINDIR/cursor-update.sh
+
+# Download latest appimagetool
+curl -L -o $BINDIR/lib/appimagetool-x86_64.AppImage https://github.com/AppImage/appimagetool/releases/download/continuous/appimagetool-x86_64.AppImage
+chmod +x $BINDIR/lib/appimagetool-x86_64.AppImage
 
 cat <<EOF > $HOME/.local/share/applications/cursor.desktop
 [Desktop Entry]
 Name=Cursor
-Exec=$BINDIR/cursor --enable-features=UseOzonePlatform --ozone-platform-hint=wayland %F
+Exec=$BINDIR/cursor --no-sandbox --enable-features=UseOzonePlatform --ozone-platform-hint=wayland %F
 Path=$BINDIR
-Icon=$HOME/.icons/cursor.png
+Icon=$BINDIR/icons/cursor.png
 Type=Application
 Categories=Utility;Development;
 StartupWMClass=Cursor
 X-AppImage-Version=latest
 Comment=Cursor is an AI-first coding environment.
 MimeType=x-scheme-handler/cursor;
-
+Terminal=false
 
 [Desktop Action new-empty-window]
-Exec=$BINDIR/cursor --enable-features=UseOzonePlatformc --ozone-platform-hint --new-window %F
+Exec=$BINDIR/cursor --no-sandbox --enable-features=UseOzonePlatformc --ozone-platform-hint --new-window %F
 EOF
 
-$BINDIR/cursor-update.sh
+$BINDIR/cursor-update.sh "$BINDIR"
