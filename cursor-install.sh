@@ -34,9 +34,21 @@ fi
 
 mkdir -p $BINDIR/icons $BINDIR/lib $HOME/.local/share/applications
 
-cp ./cursor.png $BINDIR/icons/cursor.png
+# Check and copy or download cursor.png
+if [ -f ./cursor.png ]; then
+    cp ./cursor.png $BINDIR/icons/cursor.png
+else
+    echo "cursor.png not found locally. Downloading..."
+    curl -L -o $BINDIR/icons/cursor.png https://raw.githubusercontent.com/mkarajohn/cursor_linux_patch_scripts/master/cursor.png
+fi
 
-cp ./cursor-update.sh $BINDIR/cursor-update.sh
+# Check and copy or download cursor-update.sh
+if [ -f ./cursor-update.sh ]; then
+    cp ./cursor-update.sh $BINDIR/cursor-update.sh
+else
+    echo "cursor-update.sh not found locally. Downloading..."
+    curl -L -o $BINDIR/cursor-update.sh https://raw.githubusercontent.com/mkarajohn/cursor_linux_patch_scripts/master/cursor-update.sh
+fi
 chmod +x $BINDIR/cursor-update.sh
 
 # Download latest appimagetool
