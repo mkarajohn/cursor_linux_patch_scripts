@@ -70,7 +70,7 @@ MimeType=x-scheme-handler/cursor;
 Terminal=false
 
 [Desktop Action new-empty-window]
-Exec=$BINDIR/cursor --no-sandbox --enable-features=UseOzonePlatformc --ozone-platform-hint --new-window %F
+Exec=$BINDIR/cursor --no-sandbox --enable-features=UseOzonePlatform --ozone-platform-hint --new-window %F
 EOF
 
 $BINDIR/cursor-update.sh "$BINDIR"
