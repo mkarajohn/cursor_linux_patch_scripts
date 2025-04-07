@@ -23,28 +23,30 @@ curl -fsSL https://raw.githubusercontent.com/mkarajohn/cursor_linux_patch_script
 
 ### Manual Install
 
-1. Download the script:
+1. Get the installation script:
+
+* Either by downloading it directly:
 
 ```bash
 wget https://raw.githubusercontent.com/mkarajohn/cursor_linux_patch_scripts/master/cursor-install.sh
 ```
 
+* or by cloning the repo with `git clone git@github.com:mkarajohn/cursor_linux_patch_scripts.git` 
+
+* or by downloading a `.zip` file of the repo
+
+and then
+
 2. Run the script:
 
 ```bash
-bash cursor-install.sh
+cursor-install.sh
 ```
 
 3. Update Cursor:
 
 ```bash
 $HOME/Applications/cursor/cursor-update.sh
-```
-
-4. Uninstall Cursor:
-
-```bash
-rm -rf $HOME/Applications/cursor $HOME/.icons/cursor.png $HOME/.local/share/applications/cursor.desktop
 ```
 
 ## Uninstallation
