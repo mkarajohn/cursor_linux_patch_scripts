@@ -11,12 +11,13 @@ else
 fi
 
 TEMPDIR=$BINDIR/tmp
-APPIMAGE_URL=$(curl --silent 'https://www.cursor.com/api/download?platform=linux-x64&releaseTrack=stable' | jq '.downloadUrl' | tr -d '"')
+
+APPIMAGE_URL=$(curl -s -H 'Accept: application/json' 'https://cursor.com/api/download?platform=linux-x64&releaseTrack=stable' | jq -r '.downloadUrl' | tr -d '"')
 
 mkdir -p $TEMPDIR
 pushd $TEMPDIR
 
-curl $APPIMAGE_URL --output $TEMPDIR/cursor.AppImage.original 
+curl -L "$APPIMAGE_URL" --output $TEMPDIR/cursor.AppImage.original
 chmod +x $TEMPDIR/cursor.AppImage.original
 
 # Extract the AppImage
